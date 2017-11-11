@@ -1,4 +1,4 @@
-#include "komiwojazer.h"
+﻿#include "komiwojazer.h"
 
 
 
@@ -81,6 +81,297 @@ void komiwojazer::zachlanny()
 	}
 	show2.push_back(komi[n][0]);
 	droga += show2.at(show2.size() - 1);
+}
+void komiwojazer::podzialuIOgraniczen()
+{
+	//----------------------------------------------------
+	cout << endl;
+	for (int i = 0; i < komi.size(); i++)
+	{
+		for (int j = 0; j < komi.size(); j++)
+		{
+			cout << komi[i][j] << "  ";
+		}
+		cout << endl;
+	}
+	cout << endl;
+	//----------------------------------------------------X
+
+	vector <int> wierszMin;		// wartości minimalne dla wierszy
+	vector <int> kolumnaMin;	// wartości minimalne dla kolumn
+	vector <int> wynik;			// droga komiwojazera
+	vector <vector <int>> temp;	// tymczasowa macierz, na której przeprowadzane są obliczenia
+	int D = 0;					// wartość dolnego ograniczenia
+	int maxW = 0;				// wartość maksymalna z minimów wierszy
+	int maxK = 0;				// wartość maksymalna z minimów kolumn
+	int max = 0;				// wartość maksymalna z minimów wierszy i kolumn
+	int kolumna = 0;			// numer kolumny do skrócenia
+	int wiersz = 0;				// numer wiersza do skrócenia
+	
+
+	for (int i = 0; i < komi.size(); i++)
+	{
+		wierszMin.push_back(9999);
+		kolumnaMin.push_back(9999);
+	}
+	temp = komi;
+	for (int x = 2; x < komi.size(); x++)
+	{
+		
+		if (x != 2)
+		{
+			//for (int w = 0; w < komi.size()-(x-1); w++)
+			//{
+			//	temp[w].erase(temp[w].begin()+kolumna);
+			//}
+			temp.erase(temp.begin() + wiersz);
+			//temp.resize(komi.size() - (x - 2));//
+			wierszMin.resize(komi.size() - (x - 2));
+			//wierszMin.erase(wierszMin.end());
+			//kolumnaMin.erase(wierszMin.end());
+			kolumnaMin.resize(komi.size() - (x - 2));
+		}
+		
+		for (int i = 0; i < temp.size(); i++)
+		{
+			for (int j = 0; j < temp.size(); j++)
+			{
+				if (temp[i][j] < wierszMin[i])
+				{
+					wierszMin[i] = temp[i][j];
+				}
+			}
+		}
+
+		//----------------------------------------------------
+		cout << endl;
+		for (int i = 0; i < wierszMin.size(); i++)
+		{
+			cout << wierszMin[i] << "  ";
+		}
+		cout << endl;
+		//----------------------------------------------------X
+
+		for (int i = 0; i < temp.size(); i++)
+		{
+			for (int j = 0; j < temp.size(); j++)
+			{
+				if (temp[i][j] != 999)
+				{
+					temp[i][j] -= wierszMin[i];
+				}
+			}
+		}
+		//----------------------------------------------------
+		cout << endl;
+		for (int i = 0; i < temp.size(); i++)
+		{
+			for (int j = 0; j < temp.size(); j++)
+			{
+				cout << temp[i][j] << "  ";
+			}
+			cout << endl;
+		}
+		cout << endl;
+		//----------------------------------------------------X
+		for (int i = 0; i < temp.size(); i++)
+		{
+			for (int j = 0; j < temp.size(); j++)
+			{
+				if (temp[i][j] < kolumnaMin[j])
+				{
+					kolumnaMin[j] = temp[i][j];
+				}
+			}
+		}
+		//----------------------------------------------------
+		cout << endl;
+		for (int i = 0; i < kolumnaMin.size(); i++)
+		{
+			cout << kolumnaMin[i] << "  ";
+		}
+		cout << endl;
+		//----------------------------------------------------X
+		for (int i = 0; i < temp.size(); i++)
+		{
+			for (int j = 0; j < temp.size(); j++)
+			{
+				if (temp[i][j] != 999)
+				{
+					temp[i][j] -= kolumnaMin[j];
+				}
+			}
+		}
+
+		for (int i = 0; i < wierszMin.size(); i++)
+		{
+			D += kolumnaMin[i] + wierszMin[i];
+			kolumnaMin[i] = 9999;
+			wierszMin[i] = 9999;
+		}
+		int wf = 1;
+		int kf[4] = { 1, 1, 1, 1 };
+
+		for (int i = 0; i < temp.size(); i++)
+		{
+			for (int j = 0; j < temp.size(); j++)
+			{
+				if (temp[i][j] == 0)
+				{
+					if (wf == 1)
+					{
+						wf = 0;
+					}
+					else
+					{
+						if (temp[i][j] < wierszMin[i])
+						{
+							wierszMin[i] = temp[i][j];
+						}
+					}
+				}
+				else
+				{
+					if (temp[i][j] < wierszMin[i])
+					{
+						wierszMin[i] = temp[i][j];
+					}
+				}
+				/////////////////////////////////////
+
+				if (temp[i][j] == 0)
+				{
+					if (kf[j] == 1)
+					{
+						kf[j] = 0;
+					}
+					else
+					{
+						if (temp[i][j] < kolumnaMin[j])
+						{
+							kolumnaMin[j] = temp[i][j];
+						}
+					}
+				}
+				else
+				{
+					if (temp[i][j] < kolumnaMin[j])
+					{
+						kolumnaMin[j] = temp[i][j];
+					}
+				}
+			}
+			wf = 1;
+		}
+
+
+
+		//----------------------------------------------------
+		cout << endl;
+		for (int i = 0; i < kolumnaMin.size(); i++)
+		{
+			cout << kolumnaMin[i] << "  ";
+		}
+		cout << endl;
+		//----------------------------------------------------X
+
+		//----------------------------------------------------
+		cout << endl;
+		for (int i = 0; i < wierszMin.size(); i++)
+		{
+			cout << wierszMin[i] << "  ";
+		}
+		cout << endl;
+		//----------------------------------------------------X
+
+		for (int i = 0; i < wierszMin.size(); i++)
+		{
+			if (wierszMin[i] > maxW)
+			{
+				maxW = wierszMin[i];
+				wiersz = i;
+				wierszMin[i] = 999;
+			}
+			if (kolumnaMin[i] > maxK)
+			{
+				maxK = kolumnaMin[i];
+				kolumna = i;
+				kolumnaMin[i] = 999;
+			}
+		}
+		if (maxK > maxW)
+		{
+			D += maxK;
+			for (int i = 0; i < temp.size(); i++)
+			{
+				if (temp[i][kolumna] == 0)
+				{
+					wiersz = i;
+					break;
+				}
+			}
+			wynik.push_back(wiersz);
+			wynik.push_back(kolumna);
+		}
+		else
+		{
+			D += maxW;
+			for (int i = 0; i < temp.size(); i++)
+			{
+				if (temp[wiersz][i] == 0)
+				{
+					kolumna = i;
+					break;
+				}
+			}
+			wynik.push_back(wiersz);
+			wynik.push_back(kolumna);
+		}
+		komi[kolumna][wiersz] = 999;
+		if (temp.size() > (kolumna || wiersz))
+		{
+			temp[kolumna][wiersz] = 999;
+		}
+	}
+
+	temp.erase(temp.begin() + kolumna);
+
+	//----------------------------------------------------
+	cout << endl << "end" << endl;
+	for (int i = 0; i < temp.size(); i++)
+	{
+		for (int j = 0; j < temp.size(); j++)
+		{
+			cout << temp[i][j] << "  ";
+		}
+		cout << endl;
+	}
+	cout << endl;
+	//----------------------------------------------------X
+	
+	//----------------------------------------------------
+	cout << endl << "end" << endl;
+	for (int i = 0; i < komi.size(); i++)
+	{
+		for (int j = 0; j < komi.size(); j++)
+		{
+			cout << komi[i][j] << "  ";
+		}
+		cout << endl;
+	}
+	cout << endl;
+	//----------------------------------------------------X
+
+	cout << endl << "Wynik!"<< endl;
+	for (int j = 0; j < wynik.size(); j++)
+	{
+		cout << wynik[j] << "  ";
+	}
+	cout << endl;
+}
+void komiwojazer::showPodzialu()
+{
+
 }
 void komiwojazer::showZ()
 {

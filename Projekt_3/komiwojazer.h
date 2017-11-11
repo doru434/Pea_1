@@ -26,6 +26,8 @@ public:
 	komiwojazer(vector<vector <int>> &tab, int mias);
 	void przegladZupelny();
 	void zachlanny();
+	void podzialuIOgraniczen();
+	void showPodzialu();
 	void showZ();
 	void showZach();
 };

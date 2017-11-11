@@ -1,4 +1,4 @@
-#include "fileReader.h"
+﻿#include "fileReader.h"
 
 int main()
 {
@@ -23,7 +23,7 @@ int main()
 			{
 				wybor = 0, wybor2 = 0, wybor3 = 0;
 				cout << "\nCo chcesz testowac?\n";
-				cout << "(1)Przeglad zupelny\n(2)Algorytm zachlanny\n(3)Wyjscie\n(else)Ponowny wybor\n";
+				cout << "(1)Przeglad zupelny\n(2)Algorytm zachlanny\n(3)podzialuIOgraniczen\n(4)Wyjście\n(else)Ponowny wybor\n";
 				cin >> wybor2;
 
 				switch (wybor2)
@@ -37,6 +37,9 @@ int main()
 					wojazer.showZach();
 					break;
 				case 3:
+					wojazer.podzialuIOgraniczen();
+					break;
+				case 4:
 					break;
 				default:
 					break;
